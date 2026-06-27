@@ -18,19 +18,39 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Mocking EmailJS submission delay
-    setTimeout(() => {
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "df6554d6-4b41-4a34-b593-e673ce6b888e",
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+    } finally {
       setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Reset status message after 5 seconds
       setTimeout(() => setSubmitStatus(null), 5000);
-    }, 1500);
+    }
   };
 
   return (
@@ -187,6 +207,11 @@ const Contact = () => {
               {submitStatus === 'success' && (
                 <div className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-center text-sm">
                   Thank you! Your message has been sent successfully.
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-center text-sm">
+                  Oops! Something went wrong. Please try again.
                 </div>
               )}
             </form>
