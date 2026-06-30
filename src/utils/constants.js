@@ -168,7 +168,7 @@ export const SERVICES = [
 
 export const CONTACT_INFO = {
   email: 'gsna42474@gmail.com',
-  phone: '+91 8143739968',
+  phone: 'X',
   location: 'Kakinada, Andhra Pradesh, India',
   linkedin: 'https://www.linkedin.com/in/chakraveni-katari-244484364',
   aiPortfolio: 'https://app.vectorshift.ai/chatbots/embedded/684ea2a466d4e37c5d450084'
